@@ -14,6 +14,6 @@ return [
     ],
     [
         'name' => 'Sign in',
-        'to' => "/view/create-account"
+        'to' => "/view/login"
     ],
 ];

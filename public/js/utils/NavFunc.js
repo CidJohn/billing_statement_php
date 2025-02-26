@@ -13,7 +13,7 @@ function NavFunc() {
         });
       }
     });
-  }, 500);
+  }, 100);
 }
 
 export default NavFunc;

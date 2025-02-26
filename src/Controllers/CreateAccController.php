@@ -3,8 +3,10 @@
 namespace App\Controllers;
 
 use App\Controller;
-use App\Models\CreateAccount;
+use App\Models\CreateAccount\CreateAccount as CreateAccountCreateAccount;
 use App\Models\Database;
+
+session_start();
 
 class CreateAccController extends Controller
 {
@@ -16,22 +18,19 @@ class CreateAccController extends Controller
     public function createAccount()
     {
         if ($_SERVER['REQUEST_METHOD'] === "POST") {
+            $fname = $_POST['fname'] ?? "";
+            $mname = $_POST['mname'] ?? "";
+            $lname = $_POST['lname'] ?? "";
+            $plateno = $_POST['plateno'] ?? "";
             $email = $_POST['email'] ?? "";
             $pass = $_POST['password'] ?? "";
 
-            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                die("Invalid Email Address!");
-            }
-            if (strlen($pass) < 6) {
-                die("Password must be al least 6 characters long.");
-            }
-            $hash_pass = password_hash($pass, PASSWORD_BCRYPT);
-
             $db = Database::getInstance();
-            $accountModel = new CreateAccount($db);
-            $accountModel->createUser($email, $hash_pass);
+            $accountModel = new CreateAccountCreateAccount($db);
+            $accountModel->createUser($fname, $lname, $mname, $plateno, $email, $pass);
 
-            header("location: /Login");
+            header("location: /view/login");
+            exit;
         }
         $this->render('Login/CreateAccount');
     }
