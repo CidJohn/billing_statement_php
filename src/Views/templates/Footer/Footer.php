@@ -1,0 +1,6 @@
+   <footer class="bg-gray-800 text-white p-4 text-center flex flex-col justify-center md:flex-row md:justify-between">
+       <div class="">
+           &copy; <?= date('Y') ?> Billing Statement - All Rights Reserved.
+       </div>
+       <div class="" id="datetime"></div>
+   </footer>

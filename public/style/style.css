@@ -1,0 +1,5 @@
+.coz-border {
+  border-radius: 52% 48% 79% 21% / 2% 100% 0% 98%;
+  background: linear-gradient(to top right, #3b82f6, #6366f1, #db2777);
+  box-shadow: 0px 4px 20px 11px rgba(0, 0, 0, 0.1);
+}
