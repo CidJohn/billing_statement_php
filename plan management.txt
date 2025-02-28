@@ -1,0 +1,5 @@
+Day 1,
+Create Account
+	- fields(firstname,middle initial, lastname, plate no ,Email, pass and confirm pass );
+	- button(Create Account);
+	- validation(required-fields, strong password, confirm password, email duplication)

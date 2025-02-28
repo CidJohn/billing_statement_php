@@ -3,6 +3,9 @@
 namespace App\Controllers;
 
 use App\Controller;
+use App\Enums\ErrorCodes;
+
+session_start();
 
 class LoginController extends Controller
 {
@@ -18,7 +21,7 @@ class LoginController extends Controller
             $password = $_POST["password"] ?? "";
 
             if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                die("Invalid Email Address!");
+                $_SESSION['error'] = ErrorCodes::INVALID_EMAIL->getMessage();
             }
         }
     }

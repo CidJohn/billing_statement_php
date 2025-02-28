@@ -2,5 +2,5 @@
        <div class="">
            &copy; <?= date('Y') ?> Billing Statement - All Rights Reserved.
        </div>
-       <div class="" id="datetime"></div>
+       <div class="" id="date-display"></div>
    </footer>

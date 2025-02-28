@@ -24,10 +24,11 @@ class CreateAccController extends Controller
             $plateno = $_POST['plateno'] ?? "";
             $email = $_POST['email'] ?? "";
             $pass = $_POST['password'] ?? "";
+            $cpass = $_POST['cpass'] ?? "";
 
             $db = Database::getInstance();
             $accountModel = new CreateAccountCreateAccount($db);
-            $accountModel->createUser($fname, $lname, $mname, $plateno, $email, $pass);
+            $accountModel->createUser($fname, $lname, $mname, $plateno, $email, $pass, $cpass);
 
             header("location: /view/login");
             exit;
