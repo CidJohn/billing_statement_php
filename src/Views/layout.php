@@ -25,7 +25,7 @@ $navController = new LayoutController();
     <div class="" id="root"></div>
 
     <?php include __DIR__ . "/templates/Footer/Footer.php" ?>
-    <script src="/public/js/index.js" type="module" defer></script>
+    <script src="/public/js/script.js" type="module" defer></script>
 
 </body>
 

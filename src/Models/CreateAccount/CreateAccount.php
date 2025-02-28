@@ -35,9 +35,11 @@ class CreateAccount
         return $stmt->fetchColumn() > 0;
     }
 
-    public function createUser($fname, $lname, $mname, $plateno, $email, $password)
+    public function createUser($fname, $lname, $mname, $plateno, $email, $password, $cpass)
     {
         $this->createTable($this->pdo);
+        $symbolPattern = '/[^a-zA-Z0-9 ]/';
+
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $_SESSION['error'] = ErrorCodes::INVALID_EMAIL->getMessage();
             header("Location: /view/create-account");
@@ -46,6 +48,15 @@ class CreateAccount
             $_SESSION['error'] = ErrorCodes::WEAK_PASSWORD->getMessage();
             header("Location: /view/create-account");
         }
+        if (preg_match($symbolPattern, $password)) {
+            $_SESSION['error'] = ErrorCodes::CONTAIN_SYMBOLS->getMessage();
+            header("Location: /view/create-account");
+        }
+        if ($password === $cpass) {
+            $_SESSION['error'] = ErrorCodes::NOT_MATCH_PASSWORD->getMessage();
+            header("Location: /view/create-account");
+        }
+
         $hash_pass = password_hash($password, PASSWORD_BCRYPT);
 
         try {
