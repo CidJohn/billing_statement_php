@@ -15,6 +15,9 @@ class Database
             $dsn = "mysql:host={$config['host']};charset={$config['charset']}";
             $this->pdo = new \PDO($dsn, $config['user'], $config['password']);
             $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+
+            // echo "Connected to MySQL server successfully.\n";
+
             $this->pdo->exec("CREATE DATABASE IF NOT EXISTS {$config['dbname']} CHARACTER SET {$config['charset']}");
             $dsn = "mysql:host={$config['host']};dbname={$config['dbname']};charset={$config['charset']}";
             $this->pdo = new \PDO($dsn, $config['user'], $config['password']);

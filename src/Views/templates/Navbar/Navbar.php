@@ -20,6 +20,9 @@
                     </li>
                 <?php endforeach; ?>
             </ul>
+            <div class="hidden">
+                <?php include __DIR__ . "/../Spinner/Spinner.php" ?>
+            </div>
         </div>
     </div>
 </nav>

@@ -1,18 +1,21 @@
 <?php
 
-use App\Controllers\CreateAccController;
+use App\Controllers\AuthController;
 use App\Controllers\HomeController;
-use App\Controllers\LoginController;
 use App\Router;
 
 $router = new Router();
 
 //GET
 $router->get('/', HomeController::class, 'home');
-$router->get('/view/create-account', CreateAccController::class, 'createView');
-$router->get('/view/login', LoginController::class, 'signinView');
+$router->get('/view/create-account', AuthController::class, 'viewRegistration');
+$router->get('/view/login', AuthController::class, 'viewLogin');
+$router->get('/logout', AuthController::class, 'signOutAccount');
 
 //POST
-$router->post('/create-account', CreateAccController::class, 'createAccount');
+$router->post('/create-account', AuthController::class, 'createAccout');
+$router->post('/login-account', AuthController::class, 'signInAccount');
+$router->post('/logout', AuthController::class, 'signOutAccount');
+
 
 $router->dispatch();
