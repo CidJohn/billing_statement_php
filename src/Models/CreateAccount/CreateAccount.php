@@ -3,7 +3,7 @@
 namespace App\Models\CreateAccount;
 
 use App\Enums\ErrorCodes;
-
+use App\Utils\Serializer;
 
 class CreateAccount
 {
@@ -23,6 +23,8 @@ class CreateAccount
                 email VARCHAR(255) NOT NULL UNIQUE,
                 plate_no VARCHAR(100) NOT NULL,
                 password VARCHAR(255) NOT NULL,
+                remember_token VARCHAR(255) NULL,
+                token_expiry VARCHAR(255) NULL,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             );
         ");
@@ -34,6 +36,7 @@ class CreateAccount
         $stmt->execute([':email' => $email]);
         return $stmt->fetchColumn() > 0;
     }
+
 
     public function createUser($fname, $lname, $mname, $plateno, $email, $password, $cpass)
     {
@@ -47,12 +50,11 @@ class CreateAccount
         if (strlen($password) < 6) {
             $_SESSION['error'] = ErrorCodes::WEAK_PASSWORD->getMessage();
             header("Location: /view/create-account");
-        }
-        if (preg_match($symbolPattern, $password)) {
+        } else if (preg_match($symbolPattern, $password)) {
             $_SESSION['error'] = ErrorCodes::CONTAIN_SYMBOLS->getMessage();
             header("Location: /view/create-account");
-        }
-        if ($password === $cpass) {
+        } else if ($password !== $cpass) {
+            echo ErrorCodes::NOT_MATCH_PASSWORD->getMessage();
             $_SESSION['error'] = ErrorCodes::NOT_MATCH_PASSWORD->getMessage();
             header("Location: /view/create-account");
         }

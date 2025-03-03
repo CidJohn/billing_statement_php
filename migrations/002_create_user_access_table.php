@@ -5,12 +5,11 @@ use App\Models\Database;
 $pdo = Database::getInstance();
 
 $sql = "
-    CREATE TABLE IF NOT EXISTS user_access (
+     CREATE TABLE IF NOT EXISTS user_access (
         id INT AUTO_INCREMENT PRIMARY KEY,
-        user_id INT NOT NULL,
-        username VARCHAR(100) NOT NULL,
-        email VARCHAR(255) NOT NULL UNIQUE,
-        active VARCHAR(255) NOT NULL,
+        user_id INT NOT NULL UNIQUE,
+        user_identity VARCHAR(255) NOT NULL,
+        status VARCHAR(255) NOT NULL,
         user_type VARCHAR(255) NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );

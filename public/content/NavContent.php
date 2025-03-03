@@ -6,14 +6,14 @@ return [
     ],
     [
         'name' => 'New Statement',
-        'to' => "/view/form-statement"
+        'to' => "/"
     ],
     [
         'name' => 'Billing List',
-        'to' => "/view/billing-table"
+        'to' => "/"
     ],
     [
-        'name' => 'Sign in',
-        'to' => "/view/login"
+        'name' => 'Sign out',
+        'to' => "/logout"
     ],
 ];

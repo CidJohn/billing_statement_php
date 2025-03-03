@@ -68,3 +68,12 @@
     </script>
     <?php unset($_SESSION['error']) ?>
 <?php endif; ?>
+
+<?php if (isset($_SESSION['notif'])): ?>
+    <script>
+        alert("<?= $_SESSION['notif']; ?>");
+        window.location.href = "/view/login";
+    </script>
+    <?php unset($_SESSION['notif']) ?>
+<?php endif; ?>
+<?php session_encode(); ?>
