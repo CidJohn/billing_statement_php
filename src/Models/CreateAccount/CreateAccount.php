@@ -46,17 +46,21 @@ class CreateAccount
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $_SESSION['error'] = ErrorCodes::INVALID_EMAIL->getMessage();
             header("Location: /view/create-account");
+            exit();
         }
         if (strlen($password) < 6) {
             $_SESSION['error'] = ErrorCodes::WEAK_PASSWORD->getMessage();
             header("Location: /view/create-account");
+            exit();
         } else if (preg_match($symbolPattern, $password)) {
             $_SESSION['error'] = ErrorCodes::CONTAIN_SYMBOLS->getMessage();
             header("Location: /view/create-account");
+            exit();
         } else if ($password !== $cpass) {
             echo ErrorCodes::NOT_MATCH_PASSWORD->getMessage();
             $_SESSION['error'] = ErrorCodes::NOT_MATCH_PASSWORD->getMessage();
             header("Location: /view/create-account");
+            exit();
         }
 
         $hash_pass = password_hash($password, PASSWORD_BCRYPT);
@@ -65,7 +69,7 @@ class CreateAccount
             if ($this->emailExist($email)) {
                 $_SESSION['error'] = ErrorCodes::USER_EXISTS->getMessage();
                 header("Location: /view/create-account");
-                exit;
+                exit();
             }
             $stmt = $this->pdo->prepare("INSERT INTO users (username, plate_no,email, password) VALUES (:username,:plateno,:email,:pass)");
             $stmt->execute([

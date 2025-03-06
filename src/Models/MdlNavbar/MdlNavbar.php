@@ -2,10 +2,8 @@
 
 namespace App\Models\MdlNavbar;
 
-use App\Enums\ErrorCodes;
 use App\Utils\Serializer;
 use PDO;
-use PDOException;
 
 
 class MdlNavbar

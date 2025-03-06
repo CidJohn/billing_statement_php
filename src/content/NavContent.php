@@ -1,7 +1,7 @@
 <?php
 return [
     [
-        'name' => 'Home',
+        'name' => 'Dashboard',
         'to' => "/"
     ],
     [
@@ -10,7 +10,7 @@ return [
     ],
     [
         'name' => 'Billing List',
-        'to' => "/"
+        'to' => "/view/billing-list"
     ],
     [
         'name' => 'Sign out',

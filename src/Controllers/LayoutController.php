@@ -7,20 +7,18 @@ class LayoutController
 
     public function navbar()
     {
-        $navItem = require __DIR__ . "/../../public/content/NavContent.php";
+        $navItem = require __DIR__ . "/../content/NavContent.php";
         $verify = $_SESSION['verify'];
-        if ($verify) {
-            if (!is_array($navItem)) {
-                $navItem = [];
-            }
-            extract(["navItem" => $navItem]);
-        } else {
+        if (!$verify) {
             $navItem = [[
                 'name' => 'Sign in',
                 'to' => "/view/login"
             ]];
         }
-
+        if (!is_array($navItem)) {
+            $navItem = [];
+        }
+        extract(["navItem" => $navItem]);
         include __DIR__ . "/../Views/templates/Navbar/Navbar.php";
     }
 }
