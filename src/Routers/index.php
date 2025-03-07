@@ -1,6 +1,7 @@
 <?php
 
 use App\Controllers\AuthController;
+use App\Controllers\BillingListController;
 use App\Controllers\HomeController;
 use App\Router;
 
@@ -11,6 +12,7 @@ $router->get('/', HomeController::class, 'home');
 $router->get('/view/create-account', AuthController::class, 'viewRegistration');
 $router->get('/view/login', AuthController::class, 'viewLogin');
 $router->get('/logout', AuthController::class, 'signOutAccount');
+$router->get('/view/billing-list', BillingListController::class, 'viewBillingList');
 
 //POST
 $router->post('/create-account', AuthController::class, 'createAccout');

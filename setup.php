@@ -6,6 +6,7 @@ use App\Models\Database;
 $db = Database::getInstance();
 
 $command = $argv[1] ?? null;
+//$command = $_GET['command'] ?? null;
 
 if ($command === "migrate") {
 

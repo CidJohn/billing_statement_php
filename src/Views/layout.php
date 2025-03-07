@@ -17,15 +17,23 @@ $navController = new LayoutController();
 </head>
 
 <body class="bg-gray-100">
-    <?= $navController->navbar(); ?>
 
-    <div class="p-4 min-h-[80vh] max-h-[80vh] overflow-y-scroll ">
-        <?= $content ?>
+    <div class="hidden" id="body_content">
+
+        <?= $navController->navbar(); ?>
+
+        <div class="p-4 min-h-[80vh] max-h-[80vh] overflow-y-scroll " id="content">
+            <?= $content ?>
+        </div>
+        <div class="" id="root"></div>
+
+        <?php include __DIR__ . "/templates/Footer/Footer.php" ?>
     </div>
-    <div class="" id="root"></div>
 
-    <?php include __DIR__ . "/templates/Footer/Footer.php" ?>
-    <script src="/public/js/script.js" type="module" defer></script>
+    <div class="flex w-full min-h-[100vh] justify-center items-center " id="loading_ui">
+        <?php include __DIR__ . "/templates/Spinner/Spinner.php" ?>
+    </div>
+    <script src="/public/js/GlobalScript.js" type="module" defer></script>
 
 </body>
 

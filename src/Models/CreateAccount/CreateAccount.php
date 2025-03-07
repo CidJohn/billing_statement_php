@@ -14,20 +14,21 @@ class CreateAccount
         $this->pdo = $pdo;
     }
 
-    public static function createTable(\PDO $pdo)
+    public static function createTable(\PDO $pdo): bool
     {
-        $pdo->exec("
-            CREATE TABLE IF NOT EXISTS users (
-                id INT AUTO_INCREMENT PRIMARY KEY,
-                username VARCHAR(100) NOT NULL,
-                email VARCHAR(255) NOT NULL UNIQUE,
-                plate_no VARCHAR(100) NOT NULL,
-                password VARCHAR(255) NOT NULL,
-                remember_token VARCHAR(255) NULL,
-                token_expiry VARCHAR(255) NULL,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-            );
-        ");
+        $query = "
+        CREATE TABLE IF NOT EXISTS users (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            username VARCHAR(100) NOT NULL,
+            email VARCHAR(255) NOT NULL UNIQUE,
+            plate_no VARCHAR(100) NOT NULL,
+            password VARCHAR(255) NOT NULL,
+            remember_token VARCHAR(255) NULL,
+            token_expiry VARCHAR(255) NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
+    ";
+        return $pdo->exec($query) !== false;
     }
 
     public function emailExist($email): bool
@@ -40,23 +41,26 @@ class CreateAccount
 
     public function createUser($fname, $lname, $mname, $plateno, $email, $password, $cpass)
     {
-        $this->createTable($this->pdo);
         $symbolPattern = '/[^a-zA-Z0-9 ]/';
 
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $_SESSION['error'] = ErrorCodes::INVALID_EMAIL->getMessage();
             header("Location: /view/create-account");
+            exit();
         }
         if (strlen($password) < 6) {
             $_SESSION['error'] = ErrorCodes::WEAK_PASSWORD->getMessage();
             header("Location: /view/create-account");
+            exit();
         } else if (preg_match($symbolPattern, $password)) {
             $_SESSION['error'] = ErrorCodes::CONTAIN_SYMBOLS->getMessage();
             header("Location: /view/create-account");
+            exit();
         } else if ($password !== $cpass) {
             echo ErrorCodes::NOT_MATCH_PASSWORD->getMessage();
             $_SESSION['error'] = ErrorCodes::NOT_MATCH_PASSWORD->getMessage();
             header("Location: /view/create-account");
+            exit();
         }
 
         $hash_pass = password_hash($password, PASSWORD_BCRYPT);
@@ -65,7 +69,7 @@ class CreateAccount
             if ($this->emailExist($email)) {
                 $_SESSION['error'] = ErrorCodes::USER_EXISTS->getMessage();
                 header("Location: /view/create-account");
-                exit;
+                exit();
             }
             $stmt = $this->pdo->prepare("INSERT INTO users (username, plate_no,email, password) VALUES (:username,:plateno,:email,:pass)");
             $stmt->execute([

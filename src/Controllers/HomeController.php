@@ -4,8 +4,8 @@ namespace App\Controllers;
 
 use App\Controller;
 use App\Models\Database;
+use App\Models\MdlHome\MdlHome;
 use App\Models\MdlNavbar\MdlNavbar as NavbarValidation;
-use App\Models\Journal;
 use App\Utils\Session;
 
 Session::start();
@@ -17,14 +17,16 @@ class HomeController extends Controller
         $db = Database::getInstance();
         $modelNavbar = new NavbarValidation($db);
         $modelNavbar->checkRememberMe();
+        $details = $_SESSION['user'];
+        $user = $modelNavbar->verifyUser($_SESSION['user']);
 
-        $modelNavbar->verifyUser($_SESSION['user']);
+        $modalHome = new MdlHome($db);
+        $userInfo = $modalHome->GetUserInfo($details['id']);
 
-        $journals = [
-            new Journal('My Third Journal Entry', '2023'),
-            new Journal('My Second Journal Entry', '2022'),
-            new Journal('My First Journal Entry', '2021')
-        ];
-        $this->render('Home/home', ['journals' => $journals]);
+        if (!$user) {
+            header('Location: view/login');
+            exit();
+        }
+        $this->render('Home/home', ["users" => $userInfo]);
     }
 }

@@ -7,8 +7,8 @@ use App\Enums\ErrorCodes;
 use App\Models\CreateAccount\CreateAccount as CreateAccountCreateAccount;
 use App\Models\LoginAccount\LoginAccount as SignInAccount;
 use App\Models\Database;
+use App\Models\MdlNavbar\MdlNavbar;
 use App\Models\MdlSignout\Signout;
-use App\Utils\Session;
 
 session_start();
 
@@ -16,6 +16,11 @@ class AuthController extends Controller
 {
     public function viewRegistration()
     {
+        $db = Database::getInstance();
+        $modelNavbar = new MdlNavbar($db);
+        $modelNavbar->checkRememberMe();
+
+        $modelNavbar->verifyUser($_SESSION['user']);
         $this->render('Login/CreateAccount');
     }
 
@@ -43,6 +48,11 @@ class AuthController extends Controller
 
     public function viewLogin()
     {
+        $db = Database::getInstance();
+        $modelNavbar = new MdlNavbar($db);
+        $modelNavbar->checkRememberMe();
+
+        $modelNavbar->verifyUser($_SESSION['user']);
         $this->render("Login/Login");
     }
 

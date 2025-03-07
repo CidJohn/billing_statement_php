@@ -16,9 +16,9 @@ class LoginAccount
         $this->pdo = $pdo;
     }
 
-    public static function createTable(PDO $pdo)
+    public static function createTable(PDO $pdo): bool
     {
-        $pdo->exec("
+        $query = ("
                 CREATE TABLE IF NOT EXISTS user_access (
                 id INT AUTO_INCREMENT PRIMARY KEY,
                 user_id INT NOT NULL UNIQUE,
@@ -28,6 +28,7 @@ class LoginAccount
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             );
         ");
+        return $pdo->exec($query) !== false;
     }
 
     public function getEmailExist($email, $pass): ?array
@@ -48,6 +49,18 @@ class LoginAccount
         return [ErrorCodes::USER_EXISTS->getMessage()];
     }
 
+    public function getUserExists($id): ?bool
+    {
+        $sql = "SELECT user_id, user_identity FROM user_access WHERE user_id = :id LIMIT 1";
+        $stmt = $this->pdo->prepare($sql);
+        $user = $stmt->execute([
+            ":id" => $id,
+        ]);
+
+        return $stmt->fetchColumn() > 0;
+    }
+
+
     public function rememberMeToken($id)
     {
         $token = bin2hex(random_bytes(32));
@@ -65,7 +78,6 @@ class LoginAccount
 
     public function userCredVerification($email, $pass, $rememberMe)
     {
-        $this->createTable($this->pdo);
 
         $sql = "INSERT INTO user_access (user_id,user_identity,status,user_type) VALUES (:user_id,:user_identity,:status,:user_type) ";
 
@@ -75,24 +87,37 @@ class LoginAccount
         }
         try {
             $getuser = $this->getEmailExist($email, $pass);
-            if ($getuser) {
-                $identity = Serializer::toJson($getuser);
-                echo $rememberMe;
-                if ($rememberMe) {
-                    echo $rememberMe;
-                    $this->rememberMeToken($getuser['id']);
-                }
+            $userExist = $this->getUserExists($getuser['id']);
 
-                $hash_identity = password_hash($identity, PASSWORD_BCRYPT);
-                $stmt = $this->pdo->prepare($sql);
-                $stmt->execute([
-                    ':user_id' => $getuser['id'],
-                    ':user_identity' => $hash_identity,
-                    ':status' => 'ACTIVE',
-                    ':user_type' => 'CUSTOMER'
-                ]);
-            } else {
+            if (!$getuser) {
+                $_SESSION['error'] = $getuser;
+                header("Location: /view/login");
+                exit();
+            }
+            $identity = Serializer::toJson($getuser);
+            if ($userExist) {
+                $_SESSION['error'] = ErrorCodes::DUPLICATE_ENTRY->getMessage();
+                $this->rememberMeToken($getuser['id']);
+                header("Location: /view/login");
+                exit();
+            }
+            if ($rememberMe) {
+                $this->rememberMeToken($getuser['id']);
+            }
+
+            $hash_identity = password_hash($identity, PASSWORD_BCRYPT);
+            $stmt = $this->pdo->prepare($sql);
+            $result = $stmt->execute([
+                ':user_id' => $getuser['id'],
+                ':user_identity' => $hash_identity,
+                ':status' => 'ACTIVE',
+                ':user_type' => 'CUSTOMER'
+            ]);
+
+            if (!$result) {
                 $_SESSION['error'] = ErrorCodes::INVALID_EMAIL->getMessage();
+                header("Location: /view/login");
+                exit;
             }
         } catch (PDOException $ex) {
             die(ErrorCodes::DUPLICATE_ENTRY->getMessage());
