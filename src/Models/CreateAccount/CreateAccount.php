@@ -14,20 +14,21 @@ class CreateAccount
         $this->pdo = $pdo;
     }
 
-    public static function createTable(\PDO $pdo)
+    public static function createTable(\PDO $pdo): bool
     {
-        $pdo->exec("
-            CREATE TABLE IF NOT EXISTS users (
-                id INT AUTO_INCREMENT PRIMARY KEY,
-                username VARCHAR(100) NOT NULL,
-                email VARCHAR(255) NOT NULL UNIQUE,
-                plate_no VARCHAR(100) NOT NULL,
-                password VARCHAR(255) NOT NULL,
-                remember_token VARCHAR(255) NULL,
-                token_expiry VARCHAR(255) NULL,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-            );
-        ");
+        $query = "
+        CREATE TABLE IF NOT EXISTS users (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            username VARCHAR(100) NOT NULL,
+            email VARCHAR(255) NOT NULL UNIQUE,
+            plate_no VARCHAR(100) NOT NULL,
+            password VARCHAR(255) NOT NULL,
+            remember_token VARCHAR(255) NULL,
+            token_expiry VARCHAR(255) NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
+    ";
+        return $pdo->exec($query) !== false;
     }
 
     public function emailExist($email): bool
@@ -40,7 +41,6 @@ class CreateAccount
 
     public function createUser($fname, $lname, $mname, $plateno, $email, $password, $cpass)
     {
-        $this->createTable($this->pdo);
         $symbolPattern = '/[^a-zA-Z0-9 ]/';
 
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {

@@ -16,9 +16,9 @@ class LoginAccount
         $this->pdo = $pdo;
     }
 
-    public static function createTable(PDO $pdo)
+    public static function createTable(PDO $pdo): bool
     {
-        $pdo->exec("
+        $query = ("
                 CREATE TABLE IF NOT EXISTS user_access (
                 id INT AUTO_INCREMENT PRIMARY KEY,
                 user_id INT NOT NULL UNIQUE,
@@ -28,6 +28,7 @@ class LoginAccount
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             );
         ");
+        return $pdo->exec($query) !== false;
     }
 
     public function getEmailExist($email, $pass): ?array
@@ -77,7 +78,6 @@ class LoginAccount
 
     public function userCredVerification($email, $pass, $rememberMe)
     {
-        $this->createTable($this->pdo);
 
         $sql = "INSERT INTO user_access (user_id,user_identity,status,user_type) VALUES (:user_id,:user_identity,:status,:user_type) ";
 
