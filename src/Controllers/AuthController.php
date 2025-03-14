@@ -3,7 +3,7 @@
 namespace App\Controllers;
 
 use App\Controller;
-use App\Enums\ErrorCodes;
+use App\Enums\MessageCodes;
 use App\Models\CreateAccount\CreateAccount as CreateAccountCreateAccount;
 use App\Models\LoginAccount\LoginAccount as SignInAccount;
 use App\Models\Database;
@@ -39,7 +39,7 @@ class AuthController extends Controller
             $accountModel = new CreateAccountCreateAccount($db);
             $accountModel->createUser($fname, $lname, $mname, $plateno, $email, $pass, $cpass);
 
-            $_SESSION['notif'] = ErrorCodes::CREATED_ACCOUNT->getMessage();
+            $_SESSION['notif'] = MessageCodes::CREATED_ACCOUNT->getMessage();
             header("location: /view/create-account");
             exit;
         }

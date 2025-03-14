@@ -8,7 +8,7 @@ class LayoutController
     public function navbar()
     {
         $navItem = require __DIR__ . "/../content/NavContent.php";
-        $verify = $_SESSION['verify'];
+        $verify = $_SESSION['verify'] ?? "";
         if (!$verify) {
             $navItem = [[
                 'name' => 'Sign in',
