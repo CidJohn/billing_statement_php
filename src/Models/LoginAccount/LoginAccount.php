@@ -4,6 +4,7 @@ namespace App\Models\LoginAccount;
 
 use App\Enums\ErrorCodes;
 use App\Utils\Serializer;
+use Error;
 use PDO;
 use PDOException;
 
@@ -39,14 +40,21 @@ class LoginAccount
             ":email" => $email,
         ]);
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
-        if ($user && password_verify($pass, $user['password'])) {
-            return [
-                'id' => $user['id'],
-                'username' => $user['username'],
-                'email' => $user['email']
-            ];
+        if (!$user) {
+            $_SESSION['error'] = ErrorCodes::USER_DOES_NOT_EXIST->getMessage();
+            header("Location: /view/login");
+            exit();
         }
-        return [ErrorCodes::USER_EXISTS->getMessage()];
+        if (!password_verify($pass, $user['password'])) {
+            $_SESSION['error'] = ErrorCodes::NOT_MATCH_PASSWORD->getMessage();
+            header("Location: /view/login");
+            exit();
+        }
+        return [
+            'id' => $user['id'],
+            'username' => $user['username'],
+            'email' => $user['email']
+        ];
     }
 
     public function getUserExists($id): ?bool
@@ -88,13 +96,8 @@ class LoginAccount
         try {
             $getuser = $this->getEmailExist($email, $pass);
             $userExist = $this->getUserExists($getuser['id']);
-
-            if (!$getuser) {
-                $_SESSION['error'] = $getuser;
-                header("Location: /view/login");
-                exit();
-            }
             $identity = Serializer::toJson($getuser);
+
             if ($userExist) {
                 $_SESSION['error'] = ErrorCodes::DUPLICATE_ENTRY->getMessage();
                 $this->rememberMeToken($getuser['id']);
@@ -119,6 +122,7 @@ class LoginAccount
                 header("Location: /view/login");
                 exit;
             }
+            
         } catch (PDOException $ex) {
             die(ErrorCodes::DUPLICATE_ENTRY->getMessage());
         }

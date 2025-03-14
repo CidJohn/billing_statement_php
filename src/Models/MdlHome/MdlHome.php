@@ -15,17 +15,18 @@ class MdlHome
 
     public function GetUserInfo($userid): ?array
     {
-        $stmt = $this->pdo->prepare("SELECT username, plate_no FROM users WHERE id = :userid;");
+        $stmt = $this->pdo->prepare("SELECT username, plate_no, email FROM users WHERE id = :userid;");
         $stmt->execute([':userid' => $userid]);
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         if ($result) {
             $userInfo = [
                 [
                     'Name' => $result['username'],
-                    'Plate No' => $result['plate_no']
+                    'Plate No' => $result['plate_no'],
+                    'email' => $result['email']
                 ]
             ];
-            return $userInfo;  
+            return $userInfo;
         }
         return null;
     }

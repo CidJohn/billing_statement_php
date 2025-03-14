@@ -1,3 +1,4 @@
+import routing from "./routing/routing.js";
 import changeFavicon from "./utils/changeFavicon.js";
 import loadingEffect from "./utils/loadingEffect.js";
 import NavFunc from "./utils/NavFunc.js";
@@ -11,4 +12,5 @@ document.addEventListener("DOMContentLoaded", () => {
   NavFunc();
   RealTimeDate();
   AccountValidation();
+  routing();
 });
