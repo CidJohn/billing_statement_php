@@ -1,4 +1,4 @@
-<nav class="bg-white border-gray-200 ">
+<nav class="bg-gray-100 border-gray-200 ">
     <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         <a href="/" class="flex items-center space-x-3 rtl:space-x-reverse">
             <img src="/public/assets/img/bg-2-billing-statement.png" class="h-8 " alt="Flowbite Logo" />
@@ -11,10 +11,9 @@
             </svg>
         </button>
         <div class="hidden w-full md:block md:w-auto" id="navbar-default">
-            <ul class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white ">
+            <ul class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-gray-100 ">
                 <?php foreach ($navItem as $item):
                 ?>
-
                     <li>
                         <a href="<?= htmlspecialchars($item['to']) ?>" class=" py-2 px-3 text-gray-600 bg-blue-700 rounded-sm md:bg-transparent  md:p-0 " aria-current="page"><?= htmlspecialchars($item['name']) ?></a>
                     </li>

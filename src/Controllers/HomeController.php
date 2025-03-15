@@ -22,11 +22,13 @@ class HomeController extends Controller
 
         $modalHome = new MdlHome($db);
         $userInfo = $modalHome->GetUserInfo($details['id']);
-
+        $tabsItems = $modalHome->tabsItem();
+        $tableCol = $modalHome->tableCol();
+        $formInput = $modalHome->stateForm();
         if (!$user) {
             header('Location: view/login');
             exit();
         }
-        $this->render('Home/home', ["users" => $userInfo]);
+        $this->render('Home/home', ["users" => $userInfo, "tabsItem" => $tabsItems, "tblCol" => $tableCol, "formState" => $formInput]);
     }
 }

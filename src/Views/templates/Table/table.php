@@ -2,15 +2,11 @@
     <table class="w-full text-sm text-left rtl:text-right text-gray-500 hover:text-gray-400">
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 ">
             <tr>
-                <th scope="col" class="px-6 py-3">
-                    Product name
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Color
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    <span class="sr-only">Edit</span>
-                </th>
+                <?php foreach ($tblCol as $item): ?>
+                    <th scope="col" class="px-6 py-3">
+                        <?php echo $item ?>
+                    </th>
+                <?php endforeach; ?>
             </tr>
         </thead>
         <tbody>
@@ -23,7 +19,7 @@
                 </td>
 
                 <td class="px-6 py-4 text-right">
-                    <a href="#" class="font-medium text-blue-600  hover:underline">Edit</a>
+                    <a href="#" class="font-medium text-blue-600  hover:underline">View</a>
                 </td>
             </tr>
 

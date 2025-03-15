@@ -16,7 +16,6 @@
         <?php include __DIR__ . "/StatementEntry/StatementEntry.php" ?>
         <?php include __DIR__ . "/Monitoring/Monitoring.php" ?>
         <?php include __DIR__ . "/MenuInfo/MenuInfo.php" ?>
-
     </div>
 </div>
 
